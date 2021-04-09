@@ -5,7 +5,8 @@
 
 
 ## 개요
-> 이 문서에는 [EKS][1] 환경에 TIBCO BWCE(Container Edition) 제품을 배포 및 테스트 할 수 있는 환경을 구성하는 방법을 정리하였습니다.
+> 이 문서는 [EKS][1] 환경에 TIBCO BWCE(Container Edition) 제품을 배포 및 테스트 할 수 있도록 클러스터(+ALB) 환경 및 CI/CD를 구축하는 방법을 정리한 문서입니다.
+1. 
 
 
 
