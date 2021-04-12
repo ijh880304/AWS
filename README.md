@@ -1,19 +1,30 @@
 
 목차
+
 [1.개요](#개요)
-[2.AWS 사용자 계정 준비](#AWS-사용자-계정-준비)
+
+[2.구성도](#구성도)
+
+[3.AWS 사용자 계정 준비](#AWS-사용자-계정-준비)
+
+
 
 
 ## 개요
-> 이 문서는 [EKS][1] 환경에 TIBCO BWCE(Container Edition) 제품을 배포 및 테스트 할 수 있도록 클러스터(+ALB) 환경 및 CI/CD를 구축하는 방법을 정리한 문서입니다.
-1. 
+> 이 문서는 [EKS][1] 환경에 TIBCO BWCE(Container Edition) 제품을 배포 및 테스트 할 수 있도록 클러스터 환경 및 CI/CD를 구축하는 방법을 정리한 문서입니다.
+> EKS 환경은 심플하게 구성 하였으며 일반적인 운영 환경에서는 보안을 위한 네트워크 관리와 보안그룹 관리가 디테일하게 필요하니 별도로 확인 하는 것을 추천 드립니다.
 
 
+## 구성도
+![alt text](images/eks-diagram.png "Diagram")
+- REST 서비스 로드밸런싱을 위해 ALB 사용
+- EKS 클러스터 워커 노드는 2개(t3.medium)개로 구성
+- Docker 컨테이너 이미지를 저장할 공간으로 ECR 사용
+- BW 소스의 형상관리를 위해 Gitlab-CE 사용
+- CI/CD를 위해 Jenkins 사용
+- Build는 Maven을 사용하며 TIBCO BW Maven Plugin을 설치하여 사용
+- 라이브러리 관리를 위해 Nexus 사용
 
-
-
-
-   [1]: https://www.google.com/search?q=eks "Elastic Kubernetes Service"
 
 ## AWS 사용자 계정 준비
 
