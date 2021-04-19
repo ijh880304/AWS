@@ -1,0 +1,68 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: SampleProject.application
+    provider: fabric8
+    version: 1.0.0-SNAPSHOT
+    group: com.tibco.bw
+  name: tibco-sample-project
+  namespace: default
+spec:
+  replicas: 2
+  revisionHistoryLimit: 2
+  selector:
+    matchLabels:
+      app: SampleProject.application
+      provider: fabric8
+      group: com.tibco.bw
+  template:
+    metadata:
+      labels:
+        container: tibco-sample-project
+        project: tibco-sample-project
+        app: SampleProject.application
+        provider: fabric8
+        version: 1.0.0-SNAPSHOT
+        group: com.tibco.bw
+      name: tibco-sample-project
+      namespace: default
+    spec:
+      containers:
+      - env:
+        - name: APP_CONFIG_PROFILE
+          value: docker
+        image: 226968163822.dkr.ecr.us-east-2.amazonaws.com/tibco/sample-project
+        imagePullPolicy: Always
+        name: tibco-sample-project
+        ports:
+        - containerPort: 8080
+          name: trivnet2
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    container: tibco-sample-project
+    provider: fabric8
+    project: tibco-sample-project
+    group: com.tibco.bw
+    expose: "true"
+    app: SampleProject.application
+    version: 1.0.0-SNAPSHOT
+  name: tibco-sample-project-service
+  namespace: default
+spec:
+  ports:
+  - port: 8080
+    protocol: TCP
+    targetPort: 8080
+    nodePort: 30080
+  selector:
+    container: tibco-sample-project
+    provider: fabric8
+    project: tibco-sample-project
+    group: com.tibco.bw
+    app: SampleProject.application
+  type: NodePort

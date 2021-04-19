@@ -1,0 +1,8 @@
+FROM centos:7
+LABEL maintainer="TIBCO Software Inc."
+ADD . /
+RUN chmod 755 /scripts/*.sh && yum -y update && yum -y install unzip ssh net-tools
+RUN localedef -f UTF-8 -i ko_KR ko_KR.utf8 && ln -sf /usr/share/zoneinfo/Asia/Seoul /etc/localtime
+ENV LANG ko_KR.UTF-8
+ENV LC_ALL ko_KR.UTF-8
+ENTRYPOINT ["/scripts/start.sh"]

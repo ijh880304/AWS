@@ -1,0 +1,4 @@
+FROM 226968163822.dkr.ecr.us-east-2.amazonaws.com/tibco/bwce-base:latest
+MAINTAINER Tibco
+ADD SampleProject.application_1.0.0.ear /
+EXPOSE 8080
