@@ -114,7 +114,7 @@ eksctl version
 
 - EKS 클러스터 생성 yml 파일 업로드
 
-[create-cluster-nodegroup.yml](config/create-cluster-nodegroup.yml)
+[create-cluster-nodegroup.yml](configs/create-cluster-nodegroup.yml)
 
 ```yaml
 apiVersion: 'eksctl.io/v1alpha5'
@@ -315,7 +315,7 @@ cp ~/applications/bwceBase/*.jar resources/addons/jars/
 
 
 
-- [Dockerfile](config/Dockerfile_base) 수정
+- [Dockerfile](configs/Dockerfile_base) 수정
 
 ```shell
 vi Dockerfile
@@ -372,7 +372,7 @@ Bastion Host에 디렉토리 생성 후 ear 파일 업로드
 mkdir sampleProject
 ```
 
-[Dockerfile](config/Dockerfile_sampleProject) 생성
+[Dockerfile](configs/Dockerfile_sampleProject) 생성
 
 ```dockerfile
 FROM 226968163822.dkr.ecr.us-east-2.amazonaws.com/tibco/bwce-base:latest
@@ -403,7 +403,7 @@ aws ecr create-repository --repository-name tibco/sample-project
 docker push 226968163822.dkr.ecr.us-east-2.amazonaws.com/tibco/sample-project
 ```
 
-Kubernetes Deploy, [deployment-service.yml](config/deployment-service_sampleProject.yml)
+Kubernetes Deploy, [deployment-service.yml](configs/deployment-service_sampleProject.yml)
 
 ```shell
 vi deployment-service.yml
@@ -463,6 +463,8 @@ mvn clean package initialize fabric8:resource
 ```
 
 > template yml 기준으로 배포 yml만 생성
+>
+> template yml 파일에 nodePort 정보가 적용되지 않는 현상이 있어 수작업으로 추가가 필요함. [참고](configs/SampleProject.application_src_main_fabric8_service.yml)
 
 
 
@@ -486,7 +488,7 @@ mvn clean package initialize fabric8:resource
 
 - EC2 > LoadBalancer > Load Balancer 생성
 
-Application Load Balancer 선택
+>  Application Load Balancer 선택
 
 ![create-alb-1](images/create-alb-1.png)
 
@@ -494,21 +496,21 @@ Application Load Balancer 선택
 
 ![create-alb-3](images/create-alb-3.png)
 
-대상그룹 포트는 30080으로 설정
+> 대상그룹 포트는 30080으로 설정
 
 ![create-alb-4](images/create-alb-4.png)
 
 ![create-alb-5](images/create-alb-5.png)
 
-EKS 2개 Node 선택하여 추가
+> EKS 2개 Node 선택하여 추가
 
 ![create-alb-6](images/create-alb-6.png)
 
-[EKS Cluster 보안그룹](#EKS-Cluster-Security-Group)에 30080포트에 대해 ALB 보안그룹을 추가
+> [EKS Cluster 보안그룹](#EKS-Cluster-Security-Group)에 30080포트에 대해 ALB 보안그룹을 추가
 
 ![create-alb-7](images/create-alb-7.png)
 
-SampleProject 내 HealthCheck REST 서비스 추가
+> SampleProject 내 HealthCheck REST 서비스 추가
 
 ![bw-sample-project-healthcheck](images/bw-sample-project-healthcheck.png)
 
@@ -516,11 +518,11 @@ SampleProject 내 HealthCheck REST 서비스 추가
 
 ![bw-sample-project-healthcheck-3](images/bw-sample-project-healthcheck-3.png)
 
-[Sample Project](#Sample-Project) 컨테이너 재 배포 후 ALB 대상그룹 Health Check 상태 확인
+> [Sample Project](#Sample-Project) 컨테이너 재 배포 후 ALB 대상그룹 Health Check 상태 확인
 
 ![create-alb-healthcheck-1](images/create-alb-healthcheck-1.png)
 
-ALB를 통한 REST Test
+> ALB를 통한 REST Test
 
 ```sh
 curl http://ALB-JEJU-DEV-ESB-CLUSTER-58579496.us-east-2.elb.amazonaws.com/sample -X POST -d '{"key1":"value1"}' -H "Content-Type: application/json"
@@ -562,27 +564,27 @@ sudo EXTERNAL_URL="http://ec2-18-223-206-234.us-east-2.compute.amazonaws.com:809
 
 ![gitlab-create-project-1](images/gitlab-create-project-1.png)
 
-Gitlab Project 생성 완료 된 후 HTTP URL 확인
+> Gitlab Project 생성 완료 된 후 HTTP URL 확인
 
 ![gitlab-create-project-2](images/gitlab-create-project-2.png)
 
-Gitlab 형상관리 대상 프로젝트를 모두 선택 후 우클릭 > Team > Share Project.. > Git > Local Repository를 생성하여 선택
+> Gitlab 형상관리 대상 프로젝트를 모두 선택 후 우클릭 > Team > Share Project.. > Git > Local Repository를 생성하여 선택
 
 ![gitlab-create-project-3](images/gitlab-create-project-3.png)
 
-프로젝트 우클릭 > Team > Remote > Fetch From
+> 프로젝트 우클릭 > Team > Remote > Fetch From
 
 ![gitlab-create-project-4](images/gitlab-create-project-4.png)
 
-URI에 Gitlab Project URI(http://{gitlab-host}:{gitlab-port}/{user}/{project-name.git})와 인증정보 입력
+> URI에 Gitlab Project URI(http://{gitlab-host}:{gitlab-port}/{user}/{project-name.git})와 인증정보 입력
 
 ![gitlab-create-project-5](images/gitlab-create-project-5.png)
 
-Git Staging View에서 Unstaged Changes의 모든 항목을 Staged Changes로 옮기고 Commit
+> Git Staging View에서 Unstaged Changes의 모든 항목을 Staged Changes로 옮기고 Commit
 
 ![gitlab-create-project-6](images/gitlab-create-project-6.png)
 
-Gitlab UI에서 정상 Commit 확인
+> Gitlab UI에서 정상 Commit 확인
 
 ![gitlab-create-project-7](images/gitlab-create-project-7.png)
 
@@ -759,3 +761,61 @@ vi TIBCOUniversalInstaller_bwce_2.6.1.silent
 cd TIB_BW_Maven_Plugin_2.8.0
 ./install.sh /home/ec2-user/tibco/bwce
 ```
+
+
+
+## Jenkins CI/CD Pipeline
+
+> Gitlab의 Project Commit 발생 시 Jenkins Pipeline을 통해 자동으로 Checkout, Maven Build, Docker Build, Docker Push, Kubectl Apply를 처리하여 CI/CD를 구현합니다.
+
+
+
+- Gitlab 인증을 위해 인증정보 추가
+
+![jenkins-add-credential-for-git](images/jenkins-add-credential-for-git.png)
+
+![jenkins-add-credential-for-git-2](images/jenkins-add-credential-for-git-2.png)
+
+
+
+- Pipeline 생성 - 새로운 Item > Pipeline 선택 > Pipeline 이름 입력
+
+![jenkins-create-pipeline](images/jenkins-create-pipeline.png)
+
+- Gitlab Polling 설정 - Build Triggers > Poll SCM > "* * * * *" 입력 (1분 마다 체크)
+
+![jenkins-create-pipeline-2](images/jenkins-create-pipeline-2.png)
+
+- Pipeline SCM(Source Code Management) 설정 - Pipeline Definition > Pipeline script from SCM > SCM:Git > Repositories URL : {Git Project URL} > Credentials : 위에서 추가한 인증 선택
+- 입력 후 오류메시지 없을 경우 정상
+
+![jenkins-create-pipeline-3](images/jenkins-create-pipeline-3.png)
+
+- Script Path 설정 - {ProjectName.application}/Jenkinsfile
+
+![jenkins-create-pipeline-4](images/jenkins-create-pipeline-4.png)
+
+
+
+- BW Project에 [Jenkinsfile](configs/SampleProject.application_Jenkinsfile), [Dockerfile](configs/SampleProject.application_Dockerfile) 추가 후 Commit
+
+> Jenkins Build 결과 확인
+
+![jenkins-pipeline-build](images/jenkins-pipeline-build.png)
+
+> Kubernetes 배포 결과 확인
+
+![jenkins-pipeline-build-log](images/jenkins-pipeline-build-log.png)
+
+> ALB를 통해 REST 테스트
+
+```sh
+curl http://ALB-JEJU-DEV-ESB-CLUSTER-58579496.us-east-2.elb.amazonaws.com/sample -X POST -d '{"key1":"value1"}' -H "Content-Type: application/json"
+```
+
+
+
+
+
+
+
