@@ -14,7 +14,7 @@
 - [AWS ELB(ALB)](#aws-elb-alb-)
 - [Gitlab Host](#gitlab-host)
 - [Jenkins Host](#jenkins-host)
-- [Nexus Host(추가 예정)](#Nexus-Host(추가-예정))
+- [Nexus Host(추가 예정)](#Nexus-Host추가-예정)
 
 
 
