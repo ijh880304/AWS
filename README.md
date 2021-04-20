@@ -70,7 +70,7 @@
 - 액세스 키 생성 - AWS CLI(Command Line Interface)의 권한 부여를 위한 키
 - IAM 서비스 > 사용자 > {생성한User} > 보안 자격 증명 > 액세스 키 만들기 > **비밀 액세스 키 보관**
 
-![iam-create-access-key](U:\tmp\images\iam-create-access-key.png)
+![iam-create-access-key](images\iam-create-access-key.png)
 
 
 
@@ -92,11 +92,11 @@
 aws ec2 create-key-pair --key-name ESB-KEY-PAIR --query "KeyMaterial" --output text > ESB-KEY-PAIR.pem
 ```
 
-![aws-cloud-shell-create-key-pair](U:\tmp\images\aws-cloud-shell-create-key-pair.png)
+![aws-cloud-shell-create-key-pair](images\aws-cloud-shell-create-key-pair.png)
 
 생성 한 Key는 계속 사용 해야 하므로 다운로드 받아 보관
 
-![key-pair-download](U:\tmp\images\key-pair-download.png)
+![key-pair-download](images\key-pair-download.png)
 
 
 
@@ -108,7 +108,7 @@ sudo mv /tmp/eksctl /usr/local/bin
 eksctl version
 ```
 
-![aws-cloud-shell-install-eksctl](U:\tmp\images\aws-cloud-shell-install-eksctl.png)
+![aws-cloud-shell-install-eksctl](images\aws-cloud-shell-install-eksctl.png)
 
 
 
@@ -143,7 +143,7 @@ managedNodeGroups:
       publicKeyName: ESB-KEY-PAIR # 워커 노드에 SSH 접속을 위해 사용할 pem키 명(aws key pairs에 등록되어 있어야함)
 ```
 
-![aws-cloud-shell-upload-yml](U:\tmp\images\aws-cloud-shell-upload-yml.png)
+![aws-cloud-shell-upload-yml](images\aws-cloud-shell-upload-yml.png)
 
 
 
@@ -153,7 +153,7 @@ managedNodeGroups:
 eksctl create cluster -f create-cluster-nodegroup.yml
 ```
 
-![aws-cloud-shell-create-cluster](U:\tmp\images\aws-cloud-shell-create-cluster.png)
+![aws-cloud-shell-create-cluster](images\aws-cloud-shell-create-cluster.png)
 
 
 
@@ -165,7 +165,7 @@ eksctl create cluster -f create-cluster-nodegroup.yml
 
 - AWS Console의 [ECR 서비스](https://us-east-2.console.aws.amazon.com/ecr/get-started?region=us-east-2)에서 시작
 
-![aws-ecr-create-repository-console](U:\tmp\images\aws-ecr-create-repository-console.png)
+![aws-ecr-create-repository-console](images\aws-ecr-create-repository-console.png)
 
 - 또는 AWS CLI에서 생성(e.g. BW 베이스 이미지를 저장할 저장소)
 
@@ -182,25 +182,25 @@ aws ecr create-repository --repository-name tibco/bwce-base
 
 - EC2 서비스 > 인스턴스 > 인스턴스 시작 (t2.micro 타입으로도 충분)
 
-![ec2-bastion-create-2](U:\tmp\images\ec2-bastion-create-2.png)
+![ec2-bastion-create-2](images\ec2-bastion-create-2.png)
 
 
 
 - 클러스터 생성 중 자동으로 생성 된 VPC가 선택 되며, 서브넷은 3개의 Public 서브넷 중 임의 선택
 
-![ec2-bastion-create-3](U:\tmp\images\ec2-bastion-create-3.png)
+![ec2-bastion-create-3](images\ec2-bastion-create-3.png)
 
 
 
 - 기존에 생성했던 키페어 선택 (해당 호스트에 ssh 접속 시 키페어 파일이 필요함)
 
-![ec2-bastion-create-5](U:\tmp\images\ec2-bastion-create-5.png)
+![ec2-bastion-create-5](images\ec2-bastion-create-5.png)
 
 
 
 - 인스턴스 기동 완료 후 SSH 접속 - 여러 SSH 툴 중 MobaXterm 사용함
 
-![MobaXterm-edit-session](U:\tmp\images\MobaXterm-edit-session.PNG)
+![MobaXterm-edit-session](images\MobaXterm-edit-session.PNG)
 
 
 
@@ -231,11 +231,11 @@ Default output format [None]: json
 
 - 클러스터 > 네트워크 > 클러스터 보안 그룹
 
-![eks-cluster-security-allow-bastion-1](U:\tmp\images\eks-cluster-security-allow-bastion-1.png)
+![eks-cluster-security-allow-bastion-1](images\eks-cluster-security-allow-bastion-1.png)
 
 - 클러스터 API Server Endpoint에 접근하기 위해 HTTPS(443 포트)에 대해 Bastion Host 보안그룹을 추가
 
-![eks-cluster-security-allow-bastion-2](U:\tmp\images\eks-cluster-security-allow-bastion-2.png)
+![eks-cluster-security-allow-bastion-2](images\eks-cluster-security-allow-bastion-2.png)
 
 
 
@@ -352,15 +352,15 @@ New - BusinessWorks Application Module
 
 Deployment Target : Container 선택
 
-![bw-sample-project-1](U:\tmp\images\bw-sample-project-1.png)
+![bw-sample-project-1](images\bw-sample-project-1.png)
 
 Simple REST Service 생성(port: 8080)
 
-![bw-sample-project-2](U:\tmp\images\bw-sample-project-2.png)
+![bw-sample-project-2](images\bw-sample-project-2.png)
 
 EAR 배포파일 생성
 
-![bw-sample-project-3](U:\tmp\images\bw-sample-project-3.png)
+![bw-sample-project-3](images\bw-sample-project-3.png)
 
 
 
@@ -430,27 +430,27 @@ TIB_BW_Maven_Plugin_2.8.0 > install.bat 실행
 
 - Studio 재기동 후 프로젝트 POM 생성
 
-![sample-project-generate-POM](U:\tmp\images\sample-project-generate-POM.png)
+![sample-project-generate-POM](images\sample-project-generate-POM.png)
 
-![sample-project-generate-POM-2](U:\tmp\images\sample-project-generate-POM-2.png)
+![sample-project-generate-POM-2](images\sample-project-generate-POM-2.png)
 
-![sample-project-generate-POM-3](U:\tmp\images\sample-project-generate-POM-3.png)
+![sample-project-generate-POM-3](images\sample-project-generate-POM-3.png)
 
-![sample-project-generate-POM-4](U:\tmp\images\sample-project-generate-POM-4.png)
+![sample-project-generate-POM-4](images\sample-project-generate-POM-4.png)
 
 read-project-properties Goal은 무시하도록 quick fix(Permanently mark goal read-project-properties in pom.xml as ignored in Eclipse build)
 
-![sample-project-generate-POM-5](U:\tmp\images\sample-project-generate-POM-5.png)
+![sample-project-generate-POM-5](images\sample-project-generate-POM-5.png)
 
 
 
 - Maven build 수행 (**application.parent 프로젝트에서 수행**)
 
-![sample-project-maven-build](U:\tmp\images\sample-project-maven-build.png)
+![sample-project-maven-build](images\sample-project-maven-build.png)
 
-![sample-project-maven-build-2](U:\tmp\images\sample-project-maven-build-2.png)
+![sample-project-maven-build-2](images\sample-project-maven-build-2.png)
 
-![sample-project-maven-build-3](U:\tmp\images\sample-project-maven-build-3.png)
+![sample-project-maven-build-3](images\sample-project-maven-build-3.png)
 
 ```shell
 mvn clean package initialize com.tibco.plugins:bw6-maven-plugin:bwfabric8json
@@ -488,37 +488,37 @@ mvn clean package initialize fabric8:resource
 
 Application Load Balancer 선택
 
-![create-alb-1](U:\tmp\images\create-alb-1.png)
+![create-alb-1](images\create-alb-1.png)
 
-![create-alb-2](U:\tmp\images\create-alb-2.png)
+![create-alb-2](images\create-alb-2.png)
 
-![create-alb-3](U:\tmp\images\create-alb-3.png)
+![create-alb-3](images\create-alb-3.png)
 
 대상그룹 포트는 30080으로 설정
 
-![create-alb-4](U:\tmp\images\create-alb-4.png)
+![create-alb-4](images\create-alb-4.png)
 
-![create-alb-5](U:\tmp\images\create-alb-5.png)
+![create-alb-5](images\create-alb-5.png)
 
 EKS 2개 Node 선택하여 추가
 
-![create-alb-6](U:\tmp\images\create-alb-6.png)
+![create-alb-6](images\create-alb-6.png)
 
 [EKS Cluster 보안그룹](#EKS-Cluster-Security-Group)에 30080포트에 대해 ALB 보안그룹을 추가
 
-![create-alb-7](U:\tmp\images\create-alb-7.png)
+![create-alb-7](images\create-alb-7.png)
 
 SampleProject 내 HealthCheck REST 서비스 추가
 
-![bw-sample-project-healthcheck](U:\tmp\images\bw-sample-project-healthcheck.png)
+![bw-sample-project-healthcheck](images\bw-sample-project-healthcheck.png)
 
-![bw-sample-project-healthcheck-2](U:\tmp\images\bw-sample-project-healthcheck-2.png)
+![bw-sample-project-healthcheck-2](images\bw-sample-project-healthcheck-2.png)
 
-![bw-sample-project-healthcheck-3](U:\tmp\images\bw-sample-project-healthcheck-3.png)
+![bw-sample-project-healthcheck-3](images\bw-sample-project-healthcheck-3.png)
 
 [Sample Project](#Sample-Project) 컨테이너 재 배포 후 ALB 대상그룹 Health Check 상태 확인
 
-![create-alb-healthcheck-1](U:\tmp\images\create-alb-healthcheck-1.png)
+![create-alb-healthcheck-1](images\create-alb-healthcheck-1.png)
 
 ALB를 통한 REST Test
 
@@ -548,43 +548,43 @@ sudo EXTERNAL_URL="http://ec2-18-223-206-234.us-east-2.compute.amazonaws.com:809
 
 - 설치 및 기동 완료 후 최초 로그인 시 root pw 초기화
 
-![gitlab-root-pw](U:\tmp\images\gitlab-root-pw.png)
+![gitlab-root-pw](images\gitlab-root-pw.png)
 
 
 
 - User 생성
 
-![gitlab-add-user](U:\tmp\images\gitlab-add-user.png)
+![gitlab-add-user](images\gitlab-add-user.png)
 
 
 
 - Gitlab Project 생성 및 BW Project 연결
 
-![gitlab-create-project-1](U:\tmp\images\gitlab-create-project-1.png)
+![gitlab-create-project-1](images\gitlab-create-project-1.png)
 
 Gitlab Project 생성 완료 된 후 HTTP URL 확인
 
-![gitlab-create-project-2](U:\tmp\images\gitlab-create-project-2.png)
+![gitlab-create-project-2](images\gitlab-create-project-2.png)
 
 Gitlab 형상관리 대상 프로젝트를 모두 선택 후 우클릭 > Team > Share Project.. > Git > Local Repository를 생성하여 선택
 
-![gitlab-create-project-3](U:\tmp\images\gitlab-create-project-3.png)
+![gitlab-create-project-3](images\gitlab-create-project-3.png)
 
 프로젝트 우클릭 > Team > Remote > Fetch From
 
-![gitlab-create-project-4](U:\tmp\images\gitlab-create-project-4.png)
+![gitlab-create-project-4](images\gitlab-create-project-4.png)
 
 URI에 Gitlab Project URI(http://{gitlab-host}:{gitlab-port}/{user}/{project-name.git})와 인증정보 입력
 
-![gitlab-create-project-5](U:\tmp\images\gitlab-create-project-5.png)
+![gitlab-create-project-5](images\gitlab-create-project-5.png)
 
 Git Staging View에서 Unstaged Changes의 모든 항목을 Staged Changes로 옮기고 Commit
 
-![gitlab-create-project-6](U:\tmp\images\gitlab-create-project-6.png)
+![gitlab-create-project-6](images\gitlab-create-project-6.png)
 
 Gitlab UI에서 정상 Commit 확인
 
-![gitlab-create-project-7](U:\tmp\images\gitlab-create-project-7.png)
+![gitlab-create-project-7](images\gitlab-create-project-7.png)
 
 
 
@@ -612,7 +612,7 @@ sudo systemctl status jenkins
 sudo cat /var/lib/jenkins/secrets/initialAdminPassword
 ```
 
-![jenkins-cat-admin-pw](U:\tmp\images\jenkins-cat-admin-pw.png)
+![jenkins-cat-admin-pw](images\jenkins-cat-admin-pw.png)
 
 
 
@@ -620,23 +620,23 @@ sudo cat /var/lib/jenkins/secrets/initialAdminPassword
 
 http://ec2-18-223-210-59.us-east-2.compute.amazonaws.com:8080
 
-![jenkins-init-admin-pw](U:\tmp\images\jenkins-init-admin-pw.png)
+![jenkins-init-admin-pw](images\jenkins-init-admin-pw.png)
 
-![jenkins-install-plugin-suggested](U:\tmp\images\jenkins-install-plugin-suggested.png)
+![jenkins-install-plugin-suggested](images\jenkins-install-plugin-suggested.png)
 
 
 
 - PipeLine 구성을 위한 User 생성
 
-![jenkins-admin-user](U:\tmp\images\jenkins-admin-user.png)
+![jenkins-admin-user](images\jenkins-admin-user.png)
 
-![jenkins-welcome](U:\tmp\images\jenkins-welcome.png)
+![jenkins-welcome](images\jenkins-welcome.png)
 
 
 
 - Maven 추가
 
-![jenkins-add-maven](U:\tmp\images\jenkins-add-maven.png)
+![jenkins-add-maven](images\jenkins-add-maven.png)
 
 
 
