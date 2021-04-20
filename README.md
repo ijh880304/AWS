@@ -14,6 +14,7 @@
 - [AWS ELB(ALB)](#aws-elb-alb-)
 - [Gitlab Host](#gitlab-host)
 - [Jenkins Host](#jenkins-host)
+- [Nexus Host(추가 예정)](#Nexus-Host(추가-예정))
 
 
 
@@ -814,7 +815,7 @@ curl http://ALB-JEJU-DEV-ESB-CLUSTER-58579496.us-east-2.elb.amazonaws.com/sample
 ```
 
 
-
+## Nexus Host(추가 예정)
 
 
 
