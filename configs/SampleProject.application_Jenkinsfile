@@ -1,0 +1,46 @@
+pipeline {
+    agent any
+	
+	tools {
+        maven 'Maven-3.6.3'
+    }
+    environment {
+        PROJECT_NAME = 'SampleProject'
+    }
+    
+    stages {
+        stage('Build-Maven') {
+            steps {
+                echo 'Building..'
+                dir("${PROJECT_NAME}.application.parent") {
+					sh "pwd"
+					sh 'mvn clean package initialize fabric8:resource'
+				}
+            }
+        }
+        stage('Build-Docker') {
+            steps {
+                echo 'Building..'
+                dir("${PROJECT_NAME}.application") {
+					sh "pwd"
+					sh "aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin 226968163822.dkr.ecr.us-east-2.amazonaws.com"
+					sh "docker pull 226968163822.dkr.ecr.us-east-2.amazonaws.com/tibco/bwce-base:latest"
+					sh "docker build -t 226968163822.dkr.ecr.us-east-2.amazonaws.com/tibco/sample-project ."
+					sh "docker push 226968163822.dkr.ecr.us-east-2.amazonaws.com/tibco/sample-project"
+				}
+            }
+        }
+        stage('Deploy') {
+            steps {
+                echo 'Deploying....'
+                dir("${PROJECT_NAME}.application/target/classes/META-INF/fabric8/kubernetes") {
+					sh "kubectl apply -f tibco-sample-project-deployment.yml"
+					sh "kubectl apply -f tibco-sample-project-service-service.yml"
+					sh "kubectl rollout restart -f tibco-sample-project-deployment.yml"
+                }
+                sh "kubectl get pods -o wide"
+                sh "kubectl get svc -o wide"
+            }
+        }
+    }
+}

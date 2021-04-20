@@ -1,0 +1,21 @@
+metadata:
+  name: tibco-sample-project-service
+  namespace: default
+  labels:
+    container: tibco-sample-project
+    provider: fabric8
+    project: tibco-sample-project
+    group: com.tibco.bw
+kind: Service
+spec:
+  selector:
+    container: tibco-sample-project
+    provider: fabric8
+    project: tibco-sample-project
+    group: com.tibco.bw
+  type: NodePort
+  ports:
+  - protocol: TCP
+    port: 8080
+    targetPort: 8080
+    nodePort: 30080
