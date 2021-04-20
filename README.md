@@ -1,14 +1,10 @@
-목차
+**Contents**
 
-[1.개요](#개요)
-
-[2.구성도](#구성도)
-
-[3.AWS 사용자 계정 준비](#AWS-사용자-계정-준비)
+[TOC]
 
 
 
-## 개요
+## Summary
 
 
 
@@ -19,7 +15,7 @@
 
 
 
-## 구성도
+## Architecture
 
 
 
@@ -34,7 +30,7 @@
 
 
 
-## AWS IAM User Create
+## AWS IAM User
 
 >  [AWS](https://aws.amazon.com/)에서 root Account를 생성(가입) 한 후 테스트에 사용 할 IAM User를 하나 생성 합니다.
 
@@ -65,7 +61,7 @@
 
 
 
-## EKS Cluster Create
+## EKS Cluster
 
 > 실제 운영 환경에서는 VPC, Subnet, IAM Role, Security Group 등을 필요에 맞게 구성하여 사용 하지만 여기서는 eksctl을 사용해 대부분의 설정들을 디폴트로 하여 간단히 클러스터를 생성 합니다.
 
@@ -148,7 +144,7 @@ eksctl create cluster -f create-cluster-nodegroup.yml
 
 
 
-## ECR Repository Create
+## ECR Repository
 
 > Kubernetes에 컨테이너 배포 시 참조 할 Docker Image를 보관 및 관리하기 위한 저장소 생성
 
@@ -166,7 +162,7 @@ aws ecr create-repository --repository-name tibco/bwce-base
 
 
 
-## Bastion Host Create
+## Bastion Host
 > VPC 내에서 Docker Image 관리나 클러스터 관리 및 배포를 위한 Host를 생성합니다.(Optional)
 
 
@@ -279,7 +275,7 @@ docker info
 
 
 
-## BW Container Edition - Base Image Create
+## BW Container Edition - Base Image
 > BWCE Application을 Container 환경에 배포, 기동하기 위해 사용 할 Base Docker 이미지가 필요합니다.
 >
 > Base 이미지는 linux OS에 BW Appnode(JVM)를 기동할 수 있도록 제품들이 설치 된 상태의 이미지입니다.
@@ -471,7 +467,7 @@ mvn clean package initialize fabric8:resource
 
 
 
-## AWS ELB(ALB) Create
+## AWS ELB(ALB)
 
 
 
@@ -519,8 +515,9 @@ curl http://ALB-JEJU-DEV-ESB-CLUSTER-58579496.us-east-2.elb.amazonaws.com/sample
 
 
 
-## Gitlab Install
-- EC2 Instance 생성 시 t2.medium 이상 권장하며 Gitlab 접속 포트(e.g. 8099) 오픈하여 생성
+## Gitlab Host
+> EC2 Instance 생성 시 t2.medium 이상 권장하며 Gitlab 접속 포트(e.g. 8099) 오픈하여 생성
+
 - 설치 [참고](https://about.gitlab.com/install/#centos-7), EXTERNAL_URL은 해당 Host의 "http://도메인명:포트"
 
 ```shell
@@ -564,18 +561,26 @@ Gitlab 형상관리 대상 프로젝트를 모두 선택 후 우클릭 > Team > 
 
 ![gitlab-create-project-4](U:\tmp\images\gitlab-create-project-4.png)
 
-
+URI에 Gitlab Project URI(http://{gitlab-host}:{gitlab-port}/{user}/{project-name.git})와 인증정보 입력
 
 ![gitlab-create-project-5](U:\tmp\images\gitlab-create-project-5.png)
 
+Git Staging View에서 Unstaged Changes의 모든 항목을 Staged Changes로 옮기고 Commit
+
 ![gitlab-create-project-6](U:\tmp\images\gitlab-create-project-6.png)
+
+Gitlab UI에서 정상 Commit 확인
 
 ![gitlab-create-project-7](U:\tmp\images\gitlab-create-project-7.png)
 
 
 
-## jenkins
-https://pkg.jenkins.io/redhat-stable/
+## Jenkins Host
+>  EC2 Instance 생성 시 t2.medium 이상 권장하며 Jenkins 접속 포트(e.g. 8080) 오픈하여 생성
+
+- Jenkins 설치 [참고](https://pkg.jenkins.io/redhat-stable/)
+
+```shell
 sudo yum install java-1.8.0-openjdk-devel -y
 sudo wget -O /etc/yum.repos.d/jenkins.repo https://pkg.jenkins.io/redhat-stable/jenkins.repo
 sudo rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io.key
@@ -584,130 +589,160 @@ sudo yum install jenkins -y
 sudo systemctl daemon-reload
 sudo systemctl start jenkins
 sudo systemctl status jenkins
+```
+
+
+
+- 최초 Admin PW 확인
+
+```sh
 sudo cat /var/lib/jenkins/secrets/initialAdminPassword
+```
+
+![jenkins-cat-admin-pw](U:\tmp\images\jenkins-cat-admin-pw.png)
+
+
+
+- Jenkins UI 접속, 최초 Admin PW 입력
+
 http://ec2-18-223-210-59.us-east-2.compute.amazonaws.com:8080
 
+![jenkins-init-admin-pw](U:\tmp\images\jenkins-init-admin-pw.png)
+
+![jenkins-install-plugin-suggested](U:\tmp\images\jenkins-install-plugin-suggested.png)
 
 
+
+- PipeLine 구성을 위한 User 생성
+
+![jenkins-admin-user](U:\tmp\images\jenkins-admin-user.png)
+
+![jenkins-welcome](U:\tmp\images\jenkins-welcome.png)
+
+
+
+- Maven 추가
+
+![jenkins-add-maven](U:\tmp\images\jenkins-add-maven.png)
+
+
+
+- Git 설치
+
+```sh
 sudo yum install git -y
+```
 
 
 
-unzip apache-maven-3.6.3-bin.zip -d ~/maven-3.6.3-bin/
+- [Docker 설치](#Docker-Install) 후 jenkins User도 docker 그룹에 추가
 
-
-
-https://docs.aws.amazon.com/AmazonECS/latest/developerguide/docker-basics.htmlsudo
-
-sudo yum update -y
-sudo amazon-linux-extras install docker -y
-sudo yum install docker -y
-sudo service docker start
-sudo usermod -a -G docker ec2-user
-
+```sh
 sudo usermod -a -G docker jenkins
+```
 
 
 
+- Kubectl 설치
+
+```shell
 curl -o kubectl https://amazon-eks.s3.us-west-2.amazonaws.com/1.19.6/2021-01-05/bin/linux/amd64/kubectl
 chmod +x ./kubectl
-
 sudo chown jenkins:jenkins ./kubectl
-
 sudo mv ./kubectl /usr/bin/
-
 sudo su -s /bin/bash jenkins
-
 kubectl version --short --client
+```
 
+```shell
 aws configure
+```
+
+```yaml
 AWS Access Key ID [None]: AKIATJWC3KXXLUUIC5EY
 AWS Secret Access Key [None]: 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
 Default region name [None]: us-east-2
 Default output format [None]: json
+```
 
+```shell
 aws eks update-kubeconfig --name JEJU-DEV-ESB-CLUSTER
+```
 
 
 
+- Plugin 설치 - Jenkins 관리 > 플러그인 관리 > 설치 가능 탭 > 설치할 플러그인 검색 및 설치
+  - [GitLab Plugin](https://plugins.jenkins.io/gitlab-plugin)
+  - [Git plugin](https://plugins.jenkins.io/git)
+  - [Amazon ECR plugin](https://plugins.jenkins.io/amazon-ecr)
+  - [AWS Global Configuration Plugin](https://plugins.jenkins.io/aws-global-configuration)
+  - [Docker Pipeline](https://plugins.jenkins.io/docker-workflow)
+  - [Docker plugin](https://plugins.jenkins.io/docker-plugin)
+  - [docker-build-step](https://plugins.jenkins.io/docker-build-step)
 
 
 
+- BWCE Maven Build를 위해 TIBCO 제품 설치 - 설치 파일 업로드 및 압축 해제
 
-Plugin
+[TIB_bwce_2.6.1_linux26gl23_x86_64.zip](files/TIB_bwce_2.6.1_linux26gl23_x86_64.zip)
 
-- [GitLab Plugin](https://plugins.jenkins.io/gitlab-plugin)
-- [Git plugin](https://plugins.jenkins.io/git)
-- [Amazon ECR plugin](https://plugins.jenkins.io/amazon-ecr)
-- [AWS Global Configuration Plugin](https://plugins.jenkins.io/aws-global-configuration)
-- [Docker Pipeline](https://plugins.jenkins.io/docker-workflow)
-- [Docker plugin](https://plugins.jenkins.io/docker-plugin)
-- [docker-build-step](https://plugins.jenkins.io/docker-build-step)
-- 
+[TIB_BW_Maven_Plugin_2.8.0.zip](files/TIB_BW_Maven_Plugin_2.8.0.zip)
 
+```shell
+unzip TIB_bwce_2.6.1_linux26gl23_x86_64.zip -d TIB_bwce_2.6.1_linux26gl23_x86_64
+unzip TIB_BW_Maven_Plugin_2.8.0.zip -d TIB_BW_Maven_Plugin_2.8.0
+```
 
+- BWCE 설치 (silent 설치는 Option)
 
+```shell
+cd TIB_bwce_2.6.1_linux26gl23_x86_64
+vi TIBCOUniversalInstaller_bwce_2.6.1.silent
+```
 
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
 
-
-
-
-
-upload and unzip
-
-TIB_BW_Maven_Plugin_2.8.0.zip
-
-TIB_bwce_2.6.1_linux26gl23_x86_64.zip
-
-TIB_bwce_2.6.1_linux26gl23_x86_64
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+<comment>---Universal Installer Silent Installation Properties---</comment>
 
 
+<!--accept the license agreement-->
+<entry key="acceptLicense">true</entry>
 
+<!--the root installation directory-->
+<!--if the product does not support multiple instances and TIBCO_HOME has already been set then-->
+<!--this value is ignored and the existing TIBCO_HOME is used as the installation root-->
+<entry key="installationRoot">/home/ec2-user/tibco/bwce</entry>
+
+<!--If using an existing environment then the installationRoot AND environmentName MUST match a pre-existing environment-->
+<!--If creating a new environment then the installationRoot AND environmentName MUST BE UNIQUE and not match a pre-existing environment-->
+<entry key="environmentName">bwce</entry>
+
+<!-- The following configuration parameters control the download of all LGPL components used by BW, e.g. Hibernate -->
+<!-- LGPLAssemblyLicenseAccepted - true or false to accept the license -->
+<!-- LGPLAssemblyDownload - true or false to download the assembly from the public tibco server -->
+<!-- LGPLAssemblyPath - if LGPLAssemblyDownload is false, this is the path where the LGPL assembly is located on the system (note that all LGPL assemblies must be in the same directory -->
+<entry key="LGPLAssemblyLicenseAccepted">true</entry>
+<entry key="LGPLAssemblyDownload">true</entry>
+<entry key="LGPLAssemblyPath">/home/ec2-user/tibco/thirdpartyDownload</entry>
+
+<!--Profiles Selection-->
+<!-- The 'selectedProfiles' value is a comma separated list of profiles to install. If a profile listed below does not exist, then it is ignored and the default profile will be used. At least one profile must be listed if useInstallProfile is set to true -->
+<entry key="useInstallProfile">true</entry>
+<entry key="selectedProfiles">Typical</entry>
+
+</properties>
+```
+
+```sh
+./TIBCOUniversalInstaller-lnx-x86-64.bin -silent
+```
+
+- Maven Plugin 설치
+
+```sh
+cd TIB_BW_Maven_Plugin_2.8.0
 ./install.sh /home/ec2-user/tibco/bwce
-
-
-
-
-
-
-
-[googlelink]: https://google.com "Go google"
-
-***
-
-**double asterisks**
-
-1. 순서가 필요한 목록
-1. 순서가 필요한 목록
-   - 순서가 필요하지 않은 목록(서브) 
-   - 순서가 필요하지 않은 목록(서브) 
-1. 순서가 필요한 목록
-   1. 순서가 필요한 목록(서브)
-   1. 순서가 필요한 목록(서브)
-
-| 값         |                     의미                     |   기본값 |
-| ---------- | :------------------------------------------: | -------: |
-| `static`   |        유형(기준) 없음 / 배치 불가능         | `static` |
-| `relative` |        요소 **자신**을 기준으로 배치         |          |
-| `absolute` | 위치 상 **_부모_(조상)요소**를 기준으로 배치 |          |
-| `fixed`    |       **브라우저 창**을 기준으로 배치        |          |
-
-BREAK!
-
-> 인용문을 작성하세요!
-> > 중첩된 인용문(nested blockquote)을 만들 수 있습니다.
-> >
-> > > 중중첩된 인용문 1
-
-
-## AWS
-
-
-
-```java
-public class BootSpringBootApplication {
-  public static void main(String[] args) {
-    System.out.println("Hello, Honeymon");
-  }
-}
 ```
