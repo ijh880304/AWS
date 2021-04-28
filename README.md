@@ -34,6 +34,7 @@
 
 
 ![](images/eks-diagram.png "Diagram")
+[출처](https://jarombek.com/blog/sep-29-2020-jenkins-kubernetes)
 - REST 서비스 로드밸런싱을 위해 ALB 사용
 - EKS 클러스터 워커 노드는 2개(t3.medium)개로 구성
 - Docker 컨테이너 이미지를 저장할 공간으로 ECR 사용
